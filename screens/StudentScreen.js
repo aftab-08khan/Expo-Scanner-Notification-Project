@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 
 export default function StudentScreen({ route }) {
-  const { studentId } = route.params;
+  const { data } = route.params;
   const [message, setMessage] = useState("");
 
   const studentName = "John Doe";
+  console.log(data?.stdID);
 
   const handleSubmit = () => {
     console.log("Submitted message:", message);
@@ -13,7 +14,7 @@ export default function StudentScreen({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.studentName}>Student: {studentName}</Text>
+      <Text style={styles.studentName}>Student: {data?.pushToken}</Text>
       <TextInput
         style={styles.messageBox}
         placeholder="Enter a message"

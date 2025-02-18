@@ -22,8 +22,6 @@
       },
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.aftab08.exposcanner"
@@ -41,6 +39,15 @@
           "recordAudioAndroid": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b9182bd3-e4c4-48d9-97a8-7fc9d0dad563"
+      }
+    },
+    "owner": "aftab08"
   }
 }

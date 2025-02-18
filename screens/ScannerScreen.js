@@ -14,10 +14,8 @@ export default function ScannerScreen() {
   const navigation = useNavigation();
 
   const handleBarcodeScanned = ({ data }) => {
-    console.log(data, "scanned data");
-
     // if (data === "specificStudentID") {
-    navigation.navigate("StudentScreen", { studentId: data });
+    navigation.navigate("StudentScreen", { data: data });
     // } else {
     //   alert("This is not a valid student ID.");
     // }

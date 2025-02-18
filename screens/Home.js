@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Pressable, StyleSheet, Text, View, Alert } from "react-native";
-import { useCameraPermissions, PermissionStatus } from "expo-camera";
+import { View, Text, Pressable, Alert, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useCameraPermissions, PermissionStatus } from "expo-camera";
 
 const Home = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -36,20 +36,32 @@ const Home = () => {
         Grant camera permission to start scanning QR codes.
       </Text>
 
-      <Pressable
-        onPress={handlePermissionRequest}
-        style={styles.permissionButton}
-      >
-        <Text style={styles.buttonText}>Request Permission</Text>
-      </Pressable>
+      <View style={styles.buttonContainer}>
+        <Pressable
+          onPress={handlePermissionRequest}
+          style={styles.permissionButton}
+        >
+          <Text style={styles.buttonText}>Request Permission</Text>
+        </Pressable>
 
-      <Pressable
-        onPress={() => navigation.navigate("ScannerScreen")}
-        disabled={!permission?.granted}
-        style={[styles.scanButton, { opacity: permission?.granted ? 1 : 0.5 }]}
-      >
-        <Text style={styles.buttonText}>Scan Code</Text>
-      </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate("Notification")}
+          style={styles.notificationButton}
+        >
+          <Text style={styles.buttonText}>Go to Notifications</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => navigation.navigate("ScannerScreen")}
+          disabled={!permission?.granted}
+          style={[
+            styles.scanButton,
+            { opacity: permission?.granted ? 1 : 0.5 },
+          ]}
+        >
+          <Text style={styles.buttonText}>Scan Code</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -61,33 +73,66 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0", // Changed to a neutral background
+    backgroundColor: "#f7f8fc", // Soft gray-blue for a modern look
     padding: 20,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
     color: "#333",
+    marginBottom: 8,
   },
   description: {
     fontSize: 16,
     color: "#666",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 25,
+    paddingHorizontal: 10,
+  },
+  buttonContainer: {
+    width: "100%",
+    alignItems: "center",
   },
   permissionButton: {
-    backgroundColor: "green",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginBottom: 15,
+    backgroundColor: "#28a745", // Green for permission
+    paddingVertical: 14,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    marginBottom: 12,
+    width: "80%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3, // Android shadow
+  },
+  notificationButton: {
+    backgroundColor: "#ffcc00", // Yellow for notifications
+    paddingVertical: 14,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    marginBottom: 12,
+    width: "80%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
   scanButton: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    backgroundColor: "#007AFF", // Blue for scanning
+    paddingVertical: 14,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
   buttonText: {
     color: "white",

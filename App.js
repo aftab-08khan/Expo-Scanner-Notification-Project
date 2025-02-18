@@ -13,7 +13,7 @@ export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Notification">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="StudentScreen" component={StudentScreen} />
           <Stack.Screen name="Notification" component={Notification} />
