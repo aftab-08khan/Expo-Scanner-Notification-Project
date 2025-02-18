@@ -9,21 +9,20 @@ import {
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import { Ionicons } from "@expo/vector-icons";
-import * as Clipboard from "expo-clipboard";
 
 export default function Notification() {
   const [expoPushToken, setExpoPushToken] = useState("");
-  const [customPushToken, setCustomPushToken] = useState(""); // New custom push token field
+  const [customPushToken, setCustomPushToken] = useState("");
   const [notification, setNotification] = useState(undefined);
   const [notificationCount, setNotificationCount] = useState(0);
-  const [customMessage, setCustomMessage] = useState(""); // Custom message state
+  const [customMessage, setCustomMessage] = useState("");
   const notificationListener = useRef();
   const responseListener = useRef();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     registerForPushNotificationsAsync()
-      .then((token) => setExpoPushToken(token ?? ""))
+      .then((token) => setExpoPushToken(token ?? "")) // Store expo push token
       .catch((error) => setExpoPushToken(`${error}`));
 
     notificationListener.current =
@@ -40,6 +39,7 @@ export default function Notification() {
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
+        // Handle user tapping on notification
       });
 
     return () => {
@@ -68,27 +68,9 @@ export default function Notification() {
 
       <View style={styles.tokenContainer}>
         <Text style={styles.tokenLabel}>Your Expo Push Token:</Text>
-        <View style={styles.tokenRow}>
-          <Text
-            style={styles.tokenText}
-            numberOfLines={1}
-            ellipsizeMode="middle"
-          >
-            {expoPushToken}
-          </Text>
-          <TouchableOpacity
-            onPress={() => Clipboard.setStringAsync(expoPushToken)}
-          >
-            <Ionicons
-              name="copy"
-              size={20}
-              color="#4A90E2"
-              style={styles.copyIcon}
-            />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.tokenText}>{expoPushToken}</Text>
       </View>
-      {/* 
+
       {notification && (
         <Animated.View style={[styles.notificationCard, { opacity: fadeAnim }]}>
           <Text style={styles.notificationTitle}>
@@ -101,7 +83,7 @@ export default function Notification() {
             Data: {JSON.stringify(notification.request.content.data)}
           </Text>
         </Animated.View>
-      )} */}
+      )}
 
       {/* Custom Push Token Input */}
       <TextInput
@@ -232,15 +214,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     color: "#333",
   },
-  tokenRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  copyIcon: {
-    marginLeft: 10,
-  },
-
   button: {
     backgroundColor: "#4A90E2",
     padding: 15,
@@ -273,14 +246,30 @@ async function sendPushNotification(expoPushToken, message) {
     data: { customData: "any additional data" },
   };
 
-  await fetch("https://exp.host/--/api/v2/push/send", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(notificationMessage),
-  });
+  try {
+    const response = await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(notificationMessage),
+    });
+
+    const responseData = await response.json();
+
+    // Check if there was an error in the response
+    if (!response.ok || responseData.errors) {
+      throw new Error(
+        responseData.errors ? responseData.errors[0].message : "Unknown error"
+      );
+    }
+
+    console.log("Notification sent successfully:", responseData);
+  } catch (error) {
+    console.error("Error sending notification:", error);
+    alert(`Error sending notification: ${error.message}`);
+  }
 }
 
 async function registerForPushNotificationsAsync() {

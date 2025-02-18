@@ -22,7 +22,8 @@
     "expo-notifications": "~0.29.13",
     "expo-device": "~7.0.2",
     "expo-constants": "~17.0.6",
-    "expo-clipboard": "~7.0.1"
+    "expo-clipboard": "~7.0.1",
+    "expo-updates": "~0.26.18"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
